@@ -1,7 +1,17 @@
 const mongoose  = require('mongoose')
 const validator = require('validator')
+const config = require("config");
+const jwt = require("jsonwebtoken");
+const store=require('store');
+
 
 const UserSchema  = new mongoose.Schema({
+    _id:{
+        type: mongoose.Types.ObjectId,
+        auto:true
+
+    },
+
     name:{
         type: String,
         required: true,
@@ -13,11 +23,7 @@ const UserSchema  = new mongoose.Schema({
         required: true,
         unique:true,
         trim: true,
-        validate(value){
-            if(!validator.isEmail(value)){
-                throw new Error('Email is invalid!')
-            }
-        }
+    
 
     },
     password:{
@@ -25,24 +31,57 @@ const UserSchema  = new mongoose.Schema({
         required:true,
         trim:true,
         minlength: 7,
-        validate(value){
-            if(validator.isEmpty(value)){
-                throw new Error('Please enter your password!')
-            }else if(validator.equals(value.toLowerCase(),"password")){
-                throw new Error('Password is invalid!')
-            }else if(validator.contains(value.toLowerCase(), "password")){
-                throw new Error('Password should not contain password!')
-            }
-        }
+
     },
+
+    user_type:String,
+
     tokens:[{
         token:{
             type:String,
             required: true
         }
     }]
+
 });
+
+UserSchema.methods={
+    authenticate:function(password){
+        return passwordHash.verify(password,this.password)
+    },
+    getToken : function(){
+        const token = jwt.sign(
+            { 
+            _id: this._id 
+            }, 
+            config.jwtPrivateKey);    
+        return token
+    }
+}
+
+function validate(compte, callback) {
+    const schema = {
+      username: joi
+        .string()
+        .min(3)
+        .max(50)
+        .required(),
+      email: joi
+        .string()
+        .min(5)
+        .max(255)
+        .email()
+        .required(),
+      password: joi
+        .string()
+        .min(3)
+        .max(255)
+        .required(),
+    };
+    return joi.validate(compte, schema, callback);
+}
 
 const User = mongoose.model('User', UserSchema);
 
 module.exports = User;
+exports.validate=validate
