@@ -6,19 +6,41 @@ var bodyParser = require("body-parser");
 const jwt = require("jsonwebtoken");
 const config = require("config");
 const store=require('store');
-const { validate } = require("../models/user");
 
+
+router.get("/", (req,res)=>console.log(res))
 
 router.post("/", async (req, res) => {
-  const Account = {
-    username: req.body.username,
-    email: req.body.email,
-    password: req.body.password,
-  };
+  bcrypt.hash(req.body.password,10,(err,hash)=>{
+    if (err){
+      res.status('500').json({
+        error:err
+      })
+    }else{
+      const user = new User( {
+        _id:new mongoose.Types.ObjectId(),
+        name: req.body.name,
+        email: req.body.email,
+        password:hash
+      });
+      user.save()
+      .then((result)=>{
+        console.log(result)
+        res.status('201').json({
+          message:"user created"
+        })
+      })
+      .catch((err)=>
+          console.log(err))
+    }
+  })
+
+  /*
+
   validate(Account, async (err, value) => {
     if (err) throw err;
     await User.findOne(
-      { username: req.body.username },
+      { name: req.body.name },
       async (err, data) => {
         if (err) throw err;
         if (!data) {
@@ -39,7 +61,7 @@ router.post("/", async (req, res) => {
                       token: token,
                       user: {
                         id: user._id,
-                        username: user.username,
+                        name: user.name,
                         email: user.email,
                       }
                     }
@@ -58,6 +80,7 @@ router.post("/", async (req, res) => {
     .catch(err => {
       res.status(400).json({ msg: err.message });
     })
-    .catch(err => res.status(400).json({ msg: err.message }));
+    .catch(err => res.status(400).json({ msg: err.message }));*/
 });
 module.exports = router;
+

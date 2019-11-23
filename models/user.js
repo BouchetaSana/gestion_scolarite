@@ -3,11 +3,12 @@ const validator = require('validator')
 const config = require("config");
 const jwt = require("jsonwebtoken");
 const store=require('store');
+const joi=require('joi');
 
 
 const UserSchema  = new mongoose.Schema({
     _id:{
-        type: mongoose.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         auto:true
 
     },
@@ -61,7 +62,7 @@ UserSchema.methods={
 
 function validate(compte, callback) {
     const schema = {
-      username: joi
+      name: joi
         .string()
         .min(3)
         .max(50)
@@ -83,5 +84,5 @@ function validate(compte, callback) {
 
 const User = mongoose.model('User', UserSchema);
 
-module.exports = User;
-exports.validate=validate
+module.exports.User = User;
+module.exports.validate=validate;
