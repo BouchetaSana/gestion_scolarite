@@ -38,12 +38,12 @@ const UserSchema  = new mongoose.Schema({
     groupe:Number,
     note:{type:[Number]},
 
-    tokens:[{
+    /*tokens:[{
         token:{
             type:String,
             required: true
         }
-    }]
+    }]*/
 
 });
 

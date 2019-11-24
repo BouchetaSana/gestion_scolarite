@@ -2,14 +2,25 @@ const express = require("express");
 const router = express.Router();
 const { User } = require("../models/user");
 const bcrypt = require("bcrypt");
+const mongoose=require("mongoose");
+const MongoClient = require('mongodb').MongoClient;
 var bodyParser = require("body-parser");
 const jwt = require("jsonwebtoken");
 const config = require("config");
 const store=require('store');
 
 
-router.get("/", (req,res)=>console.log(res))
-
+router.get("/",()=> console.log('aaaa'))
+/*router.post('/', function (req, res) {
+  var adminId = req.params.id
+  if (req.body != null) {
+      var user = new User({ name: req.body.name, email: req.body.email,password: req.body.password});
+          res.json(user);
+          user.save()
+          .then(()=>{console.log('eee')})
+          .catch((err)=>{console.log(err)});
+      }
+  });*/
 router.post("/", async (req, res) => {
   bcrypt.hash(req.body.password,10,(err,hash)=>{
     if (err){
@@ -23,15 +34,18 @@ router.post("/", async (req, res) => {
         email: req.body.email,
         password:hash
       });
+      res.json(user)
       user.save()
       .then((result)=>{
-        console.log(result)
+        console.log(user)
+        console.log('save user')
         res.status('201').json({
           message:"user created"
         })
       })
-      .catch((err)=>
-          console.log(err))
+      .catch((err)=>{      
+        console.log('err'+err)
+      })
     }
   })
 
@@ -82,5 +96,6 @@ router.post("/", async (req, res) => {
     })
     .catch(err => res.status(400).json({ msg: err.message }));*/
 });
+  
 module.exports = router;
 
