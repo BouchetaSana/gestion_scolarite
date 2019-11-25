@@ -1,0 +1,103 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 3.5em;
+  margin-right: .75em;
+}
+
+
+.App-header {
+  background-color: #222;
+  padding: .5em 2em;
+  color: white;
+  display: flex;
+  align-items: center;
+}
+.App-brand {
+  display: flex;
+  align-items: center;
+}
+body{
+  background: rgb(253, 253, 253);
+}
+#container{
+  width:400px;
+  margin:0 auto;
+  margin-top:5%;
+  margin-left: 30%;
+}
+/* Bordered form */
+form {
+  width:100%;
+    padding: 30px;
+    border: 1px solid #f1f1f1;
+    background: #fff;
+    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+}
+#container h1{
+  width: 38%;
+  margin: 0 auto;
+  padding-bottom: 10px;
+}
+
+/* Full-width inputs */
+input[type=text], input[type=password] {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+.App-form input{
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+/* Set a style for all buttons */
+
+
+.App-btn {
+  background-color: #020f02;
+  border-radius: 0 2px 2px 0;
+    display: inline-block;
+    font-size: 1em;
+    text-decoration: none;
+    text-align: center;
+    
+    color: white;
+    width: 89.5%;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  
+}
+.App-btn:active {
+  background: #ff9466
+}
+
+.App-btn:hover {
+  background: #ffffff;
+  color: #000000;
+  border: 1px solid #0c0c0c;
+}
+.App-btn-yellow {
+  display: inline-flex;
+  align-items: center;
+  margin: .5em;
+  background: #f3bb39; 
+}
+
+.App-btn-yellow:hover {
+  background: #de9c03;
+}
+p{
+  text-decoration: none;
+}

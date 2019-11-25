@@ -1,6 +1,7 @@
 {
   "name": "package.json",
   "version": "0.1.0",
+  "private": true,
   "description": "",
   "main": "server.js",
   "dependencies": {
@@ -9,12 +10,18 @@
     "ejs": "^2.7.4",
     "express": "^4.17.1",
     "joi": "^14.3.1",
-    "mongodb": "^3.3.4",
     "mongoose": "^5.7.12",
     "production": "0.0.2",
     "socket.io": "^2.3.0",
     "store": "^2.0.12",
-    "validator": "^12.1.0"
+    "validator": "^12.1.0",
+    "@material-ui/icons": "^4.5.1",
+    "material-table": "^1.54.1",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0",
+    "react-router": "^5.1.2",
+    "react-router-dom": "^5.1.2",
+    "react-scripts": "3.2.0"
   },
   "devDependencies": {
     "bcryptjs": "^2.4.3",
@@ -26,5 +33,20 @@
     "start": "nodemon server.js"
   },
   "author": "Sana zaoua ibtisseme",
-  "license": "ISC"
+  "license": "ISC",
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "la}st 1 safari version"
+    ]
+  }
 }
