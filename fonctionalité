@@ -1,0 +1,148 @@
+const assert = require('assert');
+const Admin = require('../models/admin');
+const Etudiant = require('../models/etudiant');
+const express = require('express');
+const app = express();
+var mongoose = require('mongoose');
+var mongoosePaginate = require('mongoose-paginate');
+var compression = require('compression');
+var helmet = require('helmet');
+var bodyParsrer = require('body-parser')
+
+
+app.use(bodyParsrer.json())
+app.use(compression());
+app.use(helmet());
+
+
+app.use(function (req, res, next) {
+    
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    res.header("Access-Control-Allow-Methods", "PUT,POST,DELETE,GET,OPTIONS");
+    next();
+});
+
+
+
+// get all admins
+
+app.get('/', function (req, res) {
+    res.send(" ")
+})
+
+app.get('/admins', function (req, res) {
+    admins.find().then(function (admins) {
+        res.json(admins);
+    })
+})
+
+// get all admins
+
+app.post('/login', function (req, res) {
+    admins.find({ adminname: req.body.adminname, password: req.body.password }).then(function (admin) {
+        res.json(admin);
+    })
+})
+
+//  add admin
+
+app.post('/register', function (req, res) {
+    if (req.body != null) {
+        admins.find({ adminname: req.body.adminname }).then(function (u) {
+
+            if (u.length == 0) {
+                var admin = new admins({ adminname: req.body.adminname, password: req.body.password });
+                admin.save(function (err, admin) {
+                    res.json(admin);
+                })
+            } else {
+                res.json();
+            }
+        })
+    }
+})
+
+
+
+
+
+// get all etudians
+
+app.get('/etudiants/:admin', function (req, res) {
+    etudiants.find({ admin: req.params.admin }).then(function (etudiants) {
+        res.json(etudiants);
+    })
+})
+
+app.get('/petudiants/:admin', function (req, res) {
+    let page = parseInt(req.query.page || 1)
+    let size = parseInt(req.query.size || 5)
+
+    etudiants.paginate({ admin: req.params.admin }, { page: page, limit: size }, function (err, r) {
+        if (err) res.status(500).send(err);
+        else res.send(r)
+    })
+
+})
+// get etudiant by id
+
+app.get('/etudants/:admin/:id', function (req, res) {
+    etudiants.find({ _id: req.params.id, admin: req.params.admin }).then(function (etudiants) {
+        res.json(etudiants);
+    })
+})
+
+
+
+// add etidant
+
+app.post('/etudiants', function (req, res) {
+    var adminId = req.params.id
+    if (req.body != null) {
+        var etudiant = new etudiants({ nom: req.body.nom, prenom: req.body.prenom, niveau: req.body.niveau, datenes: req.body.datenes, tel: req.body.tel, specialite: req.body.specialite, admin: req.body.admin });
+        etudiant.save(function (err, etudiant) {
+            res.json(etudiant);
+        })
+    }
+})
+
+
+// add note 
+
+app.post('/etudiants', function (req, res) {
+    var adminId = req.params.id
+    if (req.body != null) {
+        var etudiant = new etudiants({ note: req.body.note, admin: req.body.admin });
+        etudiant.save(function (err, etudiant) {
+            res.json(etudiant);
+        })
+    }
+})
+
+
+// edit note 
+
+app.put('/etudiants/:admin/:id', function (req, res) {
+
+    etudiants.findByIdAndUpdate({ _id: req.params.id, admin: req.params.admin }, {
+        $set: { note: req.body.note },
+    }, { new: true }).then(function (b) {
+        res.json(b);
+    });
+})
+
+// delete etudiant
+
+/*app.delete('/etudiants/:admin/:id', function (req, res) {
+    etudiants.findByIdAndRemove({ _id: req.params.id, admin: req.params.admin }).then(function (b) {
+
+    });
+
+})*/
+
+
+
+app.listen(process.env.PORT || 5000, function () {
+    console.log('App is running')
+})
