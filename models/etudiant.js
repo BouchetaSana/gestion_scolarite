@@ -4,6 +4,7 @@ const config = require("config");
 const jwt = require("jsonwebtoken");
 const store=require('store');
 const joi=require('joi');
+//"start-with-api": "concurrently \"react-scripts start\" \" nodemon server.js\"",
 
 const UserSchema  = new mongoose.Schema({
     _id:{
@@ -12,10 +13,15 @@ const UserSchema  = new mongoose.Schema({
 
     },
 
-    name:{
+    nom:{
         type: String,
         required: true,
-        trim: true
+        trim: true,
+    },
+    prenom:{
+        type: String,
+        required: true,
+        trim: true,
     },
    
     email:{
@@ -26,18 +32,20 @@ const UserSchema  = new mongoose.Schema({
     
 
     },
-    password:{
+    motDePasse:{
         type:String,
         required:true,
         trim:true,
         minlength: 7,
 
     },
-
-    user_type:String,
+    naissance:Date,
     groupe:Number,
-    note:{type:[Number]},
+    type:String,
 
+    note:[String],
+
+    
     /*tokens:[{
         token:{
             type:String,

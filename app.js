@@ -7,9 +7,14 @@ const inscrire = require("./routes/inscrire");
 var bodyParser = require("body-parser");
 const notes=require("./routes/notes")
 const db=require("./db/db")
+const ejs =require("ejs")
 
 app.use(bodyParser.json());
 app.use(express.json());
+app.get('/',(req,res)=>{
+  res.sendFile( __dirname+'/public/index.html');
+});
+app.set("view engine","ejs");
 
 //cors
 app.use((req, res, next) => {
@@ -24,7 +29,6 @@ app.use((req, res, next) => {
   }
   next();
 });
-
 
 app.use("/inscrire", inscrire);
 

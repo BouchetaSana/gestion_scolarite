@@ -11,17 +11,8 @@ const store=require('store');
 
 
 router.get("/",()=> console.log('aaaa'))
-/*router.post('/', function (req, res) {
-  var adminId = req.params.id
-  if (req.body != null) {
-      var user = new User({ name: req.body.name, email: req.body.email,password: req.body.password});
-          res.json(user);
-          user.save()
-          .then(()=>{console.log('eee')})
-          .catch((err)=>{console.log(err)});
-      }
-  });*/
-router.post("/", async (req, res) => {
+
+router.post("/", (req, res) => {
   bcrypt.hash(req.body.password,10,(err,hash)=>{
     if (err){
       res.status('500').json({
@@ -37,7 +28,7 @@ router.post("/", async (req, res) => {
       res.json(user)
       user.save()
       .then((result)=>{
-        console.log(user)
+        console.log(result)
         console.log('save user')
         res.status('201').json({
           message:"user created"
@@ -47,6 +38,7 @@ router.post("/", async (req, res) => {
         console.log('err'+err)
       })
     }
+    
   })
 
   /*
@@ -95,7 +87,5 @@ router.post("/", async (req, res) => {
       res.status(400).json({ msg: err.message });
     })
     .catch(err => res.status(400).json({ msg: err.message }));*/
-});
-  
+})  
 module.exports = router;
-
