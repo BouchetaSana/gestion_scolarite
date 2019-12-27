@@ -1,22 +1,30 @@
-const http=require('http')
-const querystring = require('querystring');
+const config=require("config")
 const express = require("express");
 const app = express();
-const config = require("config");
-const store=require("store");
 var bodyParser = require("body-parser");
+const path = require('path');
 const notes=require("./routes/notes")
-const inscrire = require("./routes/inscrire");
+const signIn = require("./routes/signIn");
 const login=require('./routes/login')
 const db=require("./db/db")
 const ejs =require("ejs");
 const session = require("express-session");
-   
+app.use(bodyParser.json());
+app.use(express.json());
+if (!config.get("myprivatekey")) {
+  console.error("FATAL ERROR: myprivatekey is not defined.");
+  process.exit(1);
+}
+ /*  
 app.use(session({
   secret: "gestion_scolarite",
   resave: true,
   saveUninitialized: true
 }))
+app.use(express.static(path.join(__dirname, 'public')))
+app.get('/', function (req, res) {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+})
  
 .use(function(request, response, next) {
  
@@ -26,17 +34,16 @@ app.use(session({
   }
  
   if (request.session.logged === true)
-      return response.redirect("/");
+      return response.redirect("/src");
  
   next();
 })
-app.use(bodyParser.json());
-app.use(express.json());
+
 app.get('/',(req,res)=>{
-  res.sendFile( __dirname+'/public');
+  res.sendFile( __dirname+'/src');
 });
 //app.set("view engine","ejs");
-
+*/
 //cors
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
@@ -52,7 +59,7 @@ app.use((req, res, next) => {
 });
 
 
-app.use("/inscrire", inscrire);
+app.use("/signIn", signIn);
 app.use("/login",login)
 
 app.listen('8000',()=>console.log('server in port 8000'));

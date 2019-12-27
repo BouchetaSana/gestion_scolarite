@@ -1,10 +1,8 @@
-const mongoose  = require('mongoose')
-const validator = require('validator')
+const mongoose  = require('mongoose'); 
 const config = require("config");
 const jwt = require("jsonwebtoken");
 const store=require('store');
 const joi=require('joi');
-//"start-with-api": "concurrently \"react-scripts start\" \" nodemon server.js\"",
 
 const UserSchema  = new mongoose.Schema({
     _id:{
@@ -13,12 +11,12 @@ const UserSchema  = new mongoose.Schema({
 
     },
 
-    nom:{
+    FamilyName:{
         type: String,
         required: true,
         trim: true,
     },
-    prenom:{
+    FirstName:{
         type: String,
         required: true,
         trim: true,
@@ -32,28 +30,41 @@ const UserSchema  = new mongoose.Schema({
     
 
     },
-    motDePasse:{
+    password:{
         type:String,
         required:true,
         trim:true,
         minlength: 7,
 
     },
-    naissance:Date,
-    groupe:Number,
-    type:String,
-
-    note:[String],
-
-    
-    /*tokens:[{
-        token:{
-            type:String,
-            required: true
-        }
-    }]*/
+    birthday:Date,
+    group:Number,
+    token:String
 
 });
 
+function validate(user) {
+    const schema = {
+      name: joi
+        .string()
+        .min(3)
+        .max(50)
+        .required(),
+      email: joi
+        .string()
+        .min(5)
+        .max(255)
+        .email()
+        .required(),
+      password: joi
+        .string()
+        .min(7)
+        .max(255)
+        .required(),
+    };
+    return joi.validate(user, schema);
+}
+
 const Etudiant = mongoose.model('Etudiant',UserSchema);
-module.exports=Etudiant;
+module.exports.Etudiant=Etudiant;
+exports.validate=validate;

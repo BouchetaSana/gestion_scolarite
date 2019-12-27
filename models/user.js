@@ -15,7 +15,9 @@ const UserSchema  = new mongoose.Schema({
     name:{
         type: String,
         required: true,
-        trim: true
+        trim: true,
+        minlength: 3,
+        maxlength: 50
     },
    
     email:{
@@ -23,18 +25,18 @@ const UserSchema  = new mongoose.Schema({
         required: true,
         unique:true,
         trim: true,
-    
-
+        minlength: 5,
+        maxlength: 255,
     },
     password:{
         type:String,
         required:true,
         trim:true,
         minlength: 7,
-
+        maxlength: 255
     },
 
-    user_type:String,
+    isAdmin: Boolean,
 
     tokens:[{
         token:{
@@ -45,21 +47,12 @@ const UserSchema  = new mongoose.Schema({
 
 });
 
-UserSchema.methods={
-    authenticate:function(password){
-        return passwordHash.verify(password,this.password)
-    },
-    getToken : function(){
-        const token = jwt.sign(
-            { 
-            _id: this._id 
-            }, 
-            config.jwtPrivateKey);    
-        return token
-    }
-}
+UserSchema.methods.generateAuthToken = function() { 
+    const token = jwt.sign({ _id: this._id, isAdmin: this.isAdmin }, config.get('myprivatekey')); 
+    return token;
+  }
 
-function validate(compte, callback) {
+function validate(user) {
     const schema = {
       name: joi
         .string()
@@ -74,14 +67,14 @@ function validate(compte, callback) {
         .required(),
       password: joi
         .string()
-        .min(3)
+        .min(7)
         .max(255)
         .required(),
     };
-    return joi.validate(compte, schema, callback);
+    return joi.validate(user, schema);
 }
 
 const User = mongoose.model('User', UserSchema);
 
-module.exports.User = User;
-module.exports.validate=validate;
+exports.User = User;
+exports.validate=validate;
