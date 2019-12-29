@@ -1,18 +1,25 @@
 const express = require("express");
 const router = express.Router();
-const { Etudiant } = require("../models/etudiant");
+const { Etudiant, Note,validate} = require("../models/etudiant");
 const { User } = require("../models/user");
 var bodyParser = require("body-parser");
 const jwt = require("jsonwebtoken");
 const config = require("config");
 const store=require('store');
 
-/*router.post('/:user_id',(req,res)=>{
-    Etudiant.findById(req.params.user_id,function(etud,err){
-        if(err)
+router.post('/ajouteNote',(req,res)=>{
+  const { error } = validate(req.body);
+  if (error) return res.status(400).send(error.details[0].message);
+  
+  etudiant=new Etudiant;
+  const etudiant=await Etudiant.findById(req.params.user_id)
+       if(!etudaint)
           res.send(err);
         else{
-        const user=Etudiant()
-        }
-    })
-})*/
+        const note=new Note({
+          matiere=req.body.matiere,
+          prof=req.body.prof
+        })
+        
+    }
+  })

@@ -15,7 +15,9 @@ router.get("/current", auth, async (req, res) => {
 });
 
 
-router.get("/",(req,res)=> {console.log('aaaa'); })
+router.get("/",(req,res)=> {
+  res.send({express:'sanaa'});
+})
 
 router.post("/", async(req, res) => {
   // validate the request body first

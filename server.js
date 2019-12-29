@@ -3,12 +3,12 @@ const express = require("express");
 const app = express();
 var bodyParser = require("body-parser");
 const path = require('path');
-const notes=require("./routes/notes")
 const signIn = require("./routes/signIn");
-const login=require('./routes/login')
+const login=require('./routes/login');
+const etudiants=require('./routes/etudiants');
 const db=require("./db/db")
 const ejs =require("ejs");
-const session = require("express-session");
+
 app.use(bodyParser.json());
 app.use(express.json());
 if (!config.get("myprivatekey")) {
@@ -39,10 +39,11 @@ app.get('/', function (req, res) {
   next();
 })
 
+app.set("view engine","ejs");
+
 app.get('/',(req,res)=>{
-  res.sendFile( __dirname+'/src');
+  res.sendfile( __dirname+"/src");
 });
-//app.set("view engine","ejs");
 */
 //cors
 app.use((req, res, next) => {
@@ -60,6 +61,7 @@ app.use((req, res, next) => {
 
 
 app.use("/signIn", signIn);
-app.use("/login",login)
+app.use("/login",login);
+app.use("/etudiants",etudiants)
 
 app.listen('8000',()=>console.log('server in port 8000'));

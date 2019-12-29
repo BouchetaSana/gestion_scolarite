@@ -1,5 +1,4 @@
 const mongoose  = require('mongoose')
-const validator = require('validator')
 const config = require("config");
 const jwt = require("jsonwebtoken");
 const store=require('store');
@@ -57,8 +56,7 @@ function validate(user) {
       name: joi
         .string()
         .min(3)
-        .max(50)
-        .required(),
+        .max(50),
       email: joi
         .string()
         .min(5)
