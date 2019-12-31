@@ -9,7 +9,9 @@ class Login extends Component {
         super(props);
         this.state = {
          submitted: false, // Indique si on a validé le nom 
-         error:{}
+         error:{},
+         email:"",
+         password:""
         };
         this.onChange = this.onChange.bind(this)
         this.onSubmit = this.onSubmit.bind(this)
@@ -27,12 +29,12 @@ class Login extends Component {
       onSubmit = async e => {
         e.preventDefault();
         const user={
-          email:this.props.email,
-          password:this.props.password
+          email:this.state.email,
+          password:this.state.password
         }
         console.log(user)
-        if ((this.props.email === '' || this.props.password === '' )) {
-          return alert('u shoud fill all the fields !') 
+        if ((this.state.email === '' || this.state.password === '' )) {
+          return alert('you shoud fill all the fields !') 
          }
         fetch('login', {
           method: 'POST',
@@ -40,16 +42,32 @@ class Login extends Component {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify(user),
-        }).then(response => 
-          response.json()
-          ).then(data=>{
-              console.log('token'+data.token)
-              localStorage.setItem('token',data.token)
-              this.props.history.push(`/Menu`)
-                
-          }).catch((err)=>{alert("check ur information")})
+        }).then(response =>{
+          if (response.status== '200'){
+            response.json()
+            .then(data=>{
+                console.log('token'+data.token)
+                localStorage.setItem('token',data.token)
+                this.props.history.push(`/Menu`)
+                  
+            }).catch((err)=>{
+              alert("email or password invalid!!")
+          
+            })
+
+          }else{
+            alert("email or password invalid!!")
+          }
+        }).catch(()=>{
+          alert("email or password invalid!!")
+         
+        } 
+        ) 
+      } 
+          
+         
       //  this.setState({ submitted : true });
-      };
+    
       
 
       render() {
@@ -60,17 +78,19 @@ class Login extends Component {
                      <h1>Connexion</h1>
                      <label><b>E-mail</b></label>
                      <input 
-                      type="text" 
+                      type="email" 
                       placeholder="Entrer e-mail" 
                       name="email"
-                      onChange={(event) => this.props.handleChange(event)}
+                      value={this.state.email}
+                      onChange={ this.onChange}
                      ></input>
                      <label><b>password</b></label>
                      <input 
                      type="password" 
                      placeholder="Entrer le mot de passe" 
                      name="password" 
-                     onChange={(event) => this.props.handleChange(event)}
+                     value={this.state.password}
+                     onChange={ this.onChange}
                      ></input>
                     <button type="submit" className="App-btn"  ><b>Login</b></button>
                  </div>   

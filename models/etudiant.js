@@ -10,8 +10,9 @@ const UserSchema  = new mongoose.Schema({
         auto:true
 
     },
-    matrcule:{
+    matricule:{
         type:Number,
+        unique:true,
         required:true,
     },
 
@@ -28,7 +29,6 @@ const UserSchema  = new mongoose.Schema({
    
     email:{
         type: String,
-        required: true,
         unique:true,
         trim: true,
     
@@ -41,13 +41,19 @@ const UserSchema  = new mongoose.Schema({
         minlength: 7,
 
     },
-    birthday:Date,
-    niveau:{
-        type:Number,
+    dateBirth:{
+        type:Date,
+        required:true,
+    },
+    level:{
+        type:String,
         required:true,
     },
     group:Number,
-    token:String
+    token:String,
+    note:{
+        type:Number,
+    }
 
 });
 
@@ -59,19 +65,19 @@ const groupSchema=new mongoose.Schema({
         type:String,
         required:true
     },
-     etudiants:[{type:String}],
-     niveau:{
+     students:[{type:String}],
+     level:{
         type:String,
         required:true
     },
-    matiere:[{
+    module:[{
         type:String
     }]
 });
 
 
 const noteSchema = new mongoose.Schema({
-    matiere:{
+    module:{
        type:String,
        required:true  
    },
@@ -84,13 +90,20 @@ const noteSchema = new mongoose.Schema({
        type:String,
        required:true
    },
-   etudiant:{
-    type:String,
+   studentMatricule:{
+    type:Number,
     required:true
 }
 
 });
 
+
+UserSchema.methods.generateAuthToken = function() { 
+    const token = jwt.sign({ _id: this._id, isAdmin: this.isAdmin }, config.get('myprivatekey')); 
+    return token;
+  }
+
+  
 function validate(etudiant) {
     const schema = {
       FirstName: joi
@@ -114,13 +127,21 @@ function validate(etudiant) {
         .min(7)
         .max(255)
         .required(),
+      matricule: joi
+        .number()
+        .required(),
+      dateBirth: joi
+        .date()
+        .required(),
+      level:joi
+         .required(),
     };
     return joi.validate(etudiant, schema);
 };
-const Etudiant = mongoose.model('Students',UserSchema);
+const Students = mongoose.model('Students',UserSchema);
 const Group=mongoose.model('Groups',groupSchema);
 const Note=mongoose.model('Notes',noteSchema);
-module.exports.Etudiant=Etudiant;
+module.exports.Students=Students;
 module.exports.Group=Group;
 module.exports.Note=Note;
 exports.validate=validate;

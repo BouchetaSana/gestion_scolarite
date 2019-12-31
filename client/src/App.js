@@ -18,9 +18,9 @@ class App extends Component {
             password:'',
             FirstName:'',
             FamilyName:'',
-            date:'',
+            dateBirth:'',
             matricule:0,
-            niveau:'',
+            level:'',
             Note:0,
             
             tmpNamo:''
@@ -58,14 +58,14 @@ class App extends Component {
           ></Route>
 
 
-         <Route exact path="/Menu" render = {() => (<Menu>{this.props.history}</Menu>)} ></Route>
+         <Route exact path="/Menu" render = {() => (<Menu></Menu>)} ></Route>
           <Route exact path="/Student" render = {() => (<Student
-          nom = {this.state.nom} 
-          Prenom ={ this.state.Prenom}
-          date ={ this.state.date}
+          FirstName = {this.state.FirstName} 
+          FamilyName ={ this.state.FamilyName}
+          dateBirth ={ this.state.dateBirth}
           matricule ={ this.state.matricule}
           email ={ this.state.email}
-          niveau ={ this.state.niveau}
+          level ={ this.state.level}
          handleChange = {(event) => this.handleChange(event)}
          submitForm = {(event) => this.submitForm(event)}
           
@@ -83,3 +83,34 @@ class App extends Component {
 
 
 export default App;
+/* onSubmit(e){
+    e.preventDefault();
+    const student={
+      //email:this.props.FirstName[0]+'_'+this.props.FamilyName+"@esi.dz",
+      //password:this.props.FamilyName+this.props.FirstName,
+      FirstName:this.props.FirstName,
+      FamilyName:this.props.FamilyName,
+      dateBirth:this.props.dateBirth,
+      matricule:this.props.matricule,
+      level:this.props.level,       
+    }
+    if ((this.props.matricule === '' || this.props.FamilyName === '' || this.props.FirstName === '' || this.props.level === '')) {
+      return alert('you shoud fill all the fields !') 
+     }
+    fetch('students/add',{
+      method:'POST',
+      headers:{
+        'content-type':'application/json'
+      },
+      body:JSON.stringify(student)
+    }).then((response,error)=>{
+      response.json()
+      .then((data)=>{
+        alert(data)
+        this.props.history.push(`/Menu`)
+      })
+    }).catch(()=>{
+      alert("verify the informations")
+    })
+
+  }*/

@@ -5,7 +5,7 @@ var bodyParser = require("body-parser");
 const path = require('path');
 const signIn = require("./routes/signIn");
 const login=require('./routes/login');
-const etudiants=require('./routes/etudiants');
+const students=require('./routes/etudiants');
 const db=require("./db/db")
 const ejs =require("ejs");
 
@@ -62,6 +62,6 @@ app.use((req, res, next) => {
 
 app.use("/signIn", signIn);
 app.use("/login",login);
-app.use("/etudiants",etudiants)
+app.use("/students",students)
 
 app.listen('8000',()=>console.log('server in port 8000'));

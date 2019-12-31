@@ -9,59 +9,77 @@ class Student extends Component {
         this.state = {
          submitted: false, // Indique si on a validé le nom
         };
+        this.onSubmit = this.onSubmit.bind(this)
+
       }
      
-      // Affiche un message d'erreur s'il n'y a pas de nom renseigné
-  getWarning() {
-    if (this.state.submitted && (this.props.username === '' || this.props.password === '' )) {
-      return (
-        <p> Vous devez introduir le nom d'utilisateur <b>et</b> le mot de passe !</p>
-      )
-    }
-  }
-
+      onSubmit(e){
+        e.preventDefault();
+        const student={
+          email:this.props.FirstName[0]+'_'+this.props.FamilyName+"@esi.dz",
+          password:this.props.FamilyName+this.props.FirstName,
+          FirstName:this.props.FirstName,
+          FamilyName:this.props.FamilyName,
+          dateBirth:this.props.dateBirth,
+          matricule:this.props.matricule,
+          level:this.props.level,       
+        }
+      /*  if ((this.props.matricule === '' || this.props.FamilyName === '' || this.props.FirstName === '' || this.props.level === '')) {
+          return alert('you shoud fill all the fields !') 
+         }*/
+        fetch('students/add',{
+          method:'POST',
+          headers:{
+            'content-type':'application/json'
+          },
+          body:JSON.stringify(student)
+        }).then((response,error)=>{
+          response.json()
+          .then((data)=>{
+            alert(data)
+            this.props.history.push(`/Student`)
+          })
+        }).catch(()=>{
+          alert("verify the informations")
+        })
+    
+      } 
+     
+     
+     
       submitName(event) {
         this.props.submitForm(event)
         this.setState({submitted: true})
         
       }
-
       render() {
         return (
           <div id="container">
-            <form  className="App-form">
+            <form  className="App-form" onSubmit={this.onSubmit}>
                 <div className="App-form-group">   
-                     <h1>Ajouter étudiant</h1>
-                     <label><b>Nom </b></label>
+                     <h1>ADD STUDENT</h1>
+                     <label><b>First Name </b></label>
                      <input  type="text"  placeholder="Entrer le nom d'étudiant" name="nom" onChange={(event) => this.props.handleChange(event)}
                      ></input>
-                     <label><b>Prénom </b></label>
+                     <label><b>Family Name </b></label>
                      <input  type="text"  placeholder="Entrer le prénom  d'étudiant" name="prenom" onChange={(event) => this.props.handleChange(event)}
                      ></input>
-                     <label><b>Date de naissance </b></label>
+                     <label><b>Date Birth</b></label>
                      <input  type="date"  placeholder="Entrer la date de naissance" name="date" onChange={(event) => this.props.handleChange(event)}
                      ></input>
-                     <label><b>E_mail</b></label>
-                     <input  type="E_mail"  placeholder="Entrer email" name="email" onChange={(event) => this.props.handleChange(event)}
-                     ></input>
                      <label><b>Matricule</b></label>
-                     <input  type="E_mail"  placeholder="Entrer matricule" name="matricule" onChange={(event) => this.props.handleChange(event)}
+                     <input  type="number"  placeholder="Entrer matricule" name="matricule" onChange={(event) => this.props.handleChange(event)}
                      ></input>
-                     <label><b>Niveau</b></label>
-                     <input  type="number"  placeholder="Entrer Niveau" name="niveau" onChange={(event) => this.props.handleChange(event)}
+                     <label><b>level</b></label>
+                     <input  type="String"  placeholder="Entrer Niveau" name="niveau" onChange={(event) => this.props.handleChange(event)}
                      ></input>
                     
-                      <button className="App-btn" onClick={(event) => this.submitName(event)} ><b>Ajouter</b></button>
+                      <button className="App-btn" type="submit" ><b>ADD</b></button>
                  </div>   
            </form>
-           <p>le nom : {this.props.username}
-                 {this.getWarning()}</p>
-
+          
           </div>
         );
       }
-
-
-
 }
 export default  Student;
