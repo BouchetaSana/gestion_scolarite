@@ -2,16 +2,30 @@ const express = require("express");
 const router = express.Router();
 const { Students, Note,validate} = require("../models/etudiant");
 const { User } = require("../models/user");
-var bodyParser = require("body-parser");
 const jwt = require("jsonwebtoken");
 const config = require("config");
 const store=require('store');
 
-router.post('/ajouteNote',async(req,res)=>{
-  const { error } = validate(req.body);
-  if (error) return res.status(400).send(error.details[0].message);
-  let etudiant = await Students.findOne({ matricule: req.body.matricule });
+router.get('/',(req,res)=>res.send(req.body))
+
+router.post('/addNote/:matricule',async(req,res)=>{
+  let etudiant = await Students.findOne({ matricule: req.params.matricule });
   if (!etudiant) return res.status(400).json({error:"Student doesn't existe ."});
-  etudiant.Note
+  note=new Note({
+    module:req.body.module,
+    cc:req.body.cc,
+    ci:req.body.ci,
+    cf:req.body.cf,
+    prof:req.body.prof,
+    studentMatricule:req.body.studentMatricule,
+  })
+res.send(note) 
+note.save()
+  .then(()=> {
+    res.status('200').send({message:"successfully"})
+  }).catch(()=>{res.status('400').send({message:"error"})})
 
   })
+
+
+  module.exports=router;

@@ -21,8 +21,8 @@ router.post("/add", async(req, res) => {
   if (error) return res.status(400).send(error.details[0].message);
 
   //find an existing user
-  let etudiant = await Students.findOne({ email: req.body.email });
-  if (etudiant) return res.status(400).json({error:"Student already registered."});
+  let etudiant = await Students.findOne({ matricule: req.body.matricule });
+  if (etudiant) return res.status(400).json({message:"Student already registered."});
 
    etudiant = new Students({
     matricule:req.body.matricule,
@@ -35,7 +35,7 @@ router.post("/add", async(req, res) => {
   });
   etudiant.password = await bcrypt.hash(etudiant.password, 10);
   etudiant.save().then((user)=>{
-    res.json({status:user.FamilyName+ ' registred'})
+    res.json({message:user.FamilyName+ ' registred'})
     console.log(etudiant)
     res.send({
       matricule: etudiant.matricule,

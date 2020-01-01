@@ -81,11 +81,10 @@ const noteSchema = new mongoose.Schema({
        type:String,
        required:true  
    },
-    note:{
-       cc:{type:Number, default:0,},
-       ci:{type:Number, default:0,},
-       cf:{type:Number, default:0,},
-   },
+    cc:{type:Number, default:0,},
+    ci:{type:Number, default:0,},
+    cf:{type:Number, default:0,},
+
    prof:{
        type:String,
        required:true
@@ -129,6 +128,7 @@ function validate(etudiant) {
         .required(),
       matricule: joi
         .number()
+        .min(8)
         .required(),
       dateBirth: joi
         .date()
