@@ -1,7 +1,6 @@
 
 import React, { Component } from 'react'
 import { Link,withRouter } from 'react-router-dom'
-import { Collection } from 'mongoose';
 
 class Student extends Component {
 

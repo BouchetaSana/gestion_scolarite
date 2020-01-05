@@ -1,0 +1,45 @@
+version: "2"
+services:
+   mongo:
+    image: mongo:3.4
+    volumes:
+        - mongo-storage:/data/db
+        - ./security.keyfile:/data/keyfile # Nous pouvons ajouter un volume à ce container afin de stocker les données de la base
+    expose:
+        - 27017
+    ports:
+        - 27017:27017
+    restart: always
+   server:
+    container_name: server
+    build: ./server/ # Localisation du Dockerfile 
+    ports:
+      - 8000:8000 
+    volumes:
+      - ./:/usr/src/app/server/ # Le volume du WORKDIR
+      - /usr/src/app/server/node_modules
+    environment:
+      - PORT=8000
+    depends_on:  
+      - mongo
+    restart: always
+   client:
+    build: ./client/
+    # command: npm start
+    volumes:
+        - ./client/:/usr/app/client/
+        - /usr/app/client/node_modules
+    depends_on:
+        - server
+    ports:
+        - "3000:3000"
+    environment:
+      - REACT_APP_PORT=3000
+      - CHOKIDAR_USEPOLLING=true
+    restart: always
+     
+      
+
+volumes:
+  mongo-storage:
+    driver: local
