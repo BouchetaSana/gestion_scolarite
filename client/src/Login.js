@@ -36,7 +36,7 @@ class Login extends Component {
         if ((this.state.email === '' || this.state.password === '' )) {
           return alert('you shoud fill all the fields !') 
          }
-        fetch('login', {
+        fetch('http://localhost:8000/login', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

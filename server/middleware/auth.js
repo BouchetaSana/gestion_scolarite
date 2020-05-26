@@ -1,4 +1,4 @@
-const jwt = require("jsonwebtoken");
+/*const jwt = require("jsonwebtoken");
 const config = require("config");
 
 module.exports = (req, res, next) => {
@@ -16,12 +16,12 @@ module.exports = (req, res, next) => {
     });
   }
 
-}
-/*const jwt = require("jsonwebtoken");
+}*/
+const jwt = require("jsonwebtoken");
 const config = require("config");
 module.exports = function(req, res, next) {
   //get the token from the header if present
-  const token = req.headers["x-access-token"] || req.headers["authorization"];
+  const token = req.headers["x-auth-token"] || req.headers["authorization"];
   //if no token found, return response (without going to the next middelware)
   if (!token) return res.status(401).send("Access denied. No token provided.");
   try {
@@ -31,6 +31,6 @@ module.exports = function(req, res, next) {
     next();
   } catch (ex) {
     //if invalid token
-    res.status(400).send("Invalid token.");
+    res.status(401).json({message: 'Auth failed'});
   }
-};*/
+};

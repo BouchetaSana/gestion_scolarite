@@ -21,7 +21,11 @@ class App extends Component {
             dateBirth:'',
             matricule:0,
             level:'',
-            Note:0,
+            cc:0,
+            ci:0,
+            cf:0,
+            prof:"",
+            module:"",
             
             tmpNamo:''
       
@@ -72,7 +76,10 @@ class App extends Component {
           
           
           ></Student>)} ></Route>
-          <Route exact path="/Addnote" render = {() => (<Addnote></Addnote>)} ></Route>
+          <Route exact path="/Addnote" render = {() => (<Addnote
+           
+          handleChange = {(event) => this.handleChange(event)}
+          submitForm = {(event) => this.submitForm(event)}></Addnote>)} ></Route>
           
         </div>
       </Router>

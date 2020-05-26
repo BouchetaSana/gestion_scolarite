@@ -37,16 +37,14 @@ router.post("/", async(req, res) => {
   if (!user.password) return  res.status(500).json(errors);
   user.save().then((res)=>{
     console.log(user)
-    res.status(201).send({
-      _id: user._id,
-      name: user.name,
-      email: user.email
-    });
+    const token = user.generateAuthToken();
+      store.set("token", { token: token });
+      res.header("x-auth-token", token).status(200).send({
+        token:token
+   });
   }).catch(err => {
     //failed to save in database
-      errors.push(new Error({
-        db: err.message
-      }))
+      
       res.status(500).json(errors);
     })
 

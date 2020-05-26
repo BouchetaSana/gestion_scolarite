@@ -1,11 +1,11 @@
 FROM node:12.10.0-alpine
 
-WORKDIR /usr/src/app/server/
+WORKDIR /app
 
-COPY package*.json /usr/src/app/server/
-RUN npm install 
+COPY package*.json ./
+RUN npm install --quiet
 
-COPY . .
+COPY . ./
 
 EXPOSE 8000
 

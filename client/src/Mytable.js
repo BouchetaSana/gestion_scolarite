@@ -4,23 +4,19 @@ import MaterialTable from 'material-table';
 export default function MaterialTableDemo() {
   const [state, setState] = React.useState({
     columns: [
+      { title: 'matricule', field: 'matricule' },
       { title: 'Name', field: 'name' },
-      { title: 'Surname', field: 'surname' },
-      { title: 'Birth Year', field: 'birthYear', type: 'numeric' },
-      {
-        title: 'Birth Place',
-        field: 'birthCity',
-        lookup: { 34: 'İstanbul', 63: 'Şanlıurfa' },
-      },
+      { title: 'note', field: 'note' },
+    
+    
     ],
     data: [
-      { name: 'Mehmet', surname: 'Baran', birthYear: 1987, birthCity: 63 },
-      {
-        name: 'Zerya Betül',
-        surname: 'Baran',
-        birthYear: 2017,
-        birthCity: 34,
-      },
+     
+      { matricule: '17/179', name: 'Ibtissem Khedim', },
+      { matricule: '17/180', name: 'Sana boucheta', },
+      { matricule: '17/145', name: 'Zahoua amoura', },
+
+      
     ],
   });
 
@@ -54,17 +50,7 @@ export default function MaterialTableDemo() {
               }
             }, 600);
           }),
-        onRowDelete: oldData =>
-          new Promise(resolve => {
-            setTimeout(() => {
-              resolve();
-              setState(prevState => {
-                const data = [...prevState.data];
-                data.splice(data.indexOf(oldData), 1);
-                return { ...prevState, data };
-              });
-            }, 600);
-          }),
+        
       }}
     />
   );

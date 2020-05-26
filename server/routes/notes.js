@@ -1,3 +1,4 @@
+const auth=require('../middleware/auth')
 const express = require("express");
 const router = express.Router();
 const { Students, Note,validate} = require("../models/etudiant");
@@ -8,7 +9,7 @@ const store=require('store');
 
 router.get('/',(req,res)=>res.send(req.body))
 
-router.post('/addNote/:matricule',async(req,res)=>{
+router.post('/addNote/:matricule',auth,async(req,res)=>{
   let etudiant = await Students.findOne({ matricule: req.params.matricule });
   if (!etudiant) return res.status(400).json({error:"Student doesn't existe ."});
   note=new Note({

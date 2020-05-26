@@ -4,7 +4,7 @@ services:
     image: mongo:3.4
     volumes:
         - mongo-storage:/data/db
-        - ./security.keyfile:/data/keyfile # Nous pouvons ajouter un volume à ce container afin de stocker les données de la base
+        - ./security.keyfile:/data/keyfile 
     expose:
         - 27017
     ports:
@@ -16,30 +16,22 @@ services:
     ports:
       - 8000:8000 
     volumes:
-      - ./:/usr/src/app/server/ # Le volume du WORKDIR
-      - /usr/src/app/server/node_modules
-    environment:
-      - PORT=8000
+      - ./server/:/usr/app
+      - /usr/app/node_modules
+   
     depends_on:  
       - mongo
-    restart: always
    client:
-    build: ./client/
-    # command: npm start
+    build:
+      context: ./client/
+    command: npm start
     volumes:
-        - ./client/:/usr/app/client/
-        - /usr/app/client/node_modules
+      - ./client/:/usr/app
+      - /usr/app/node_modules
     depends_on:
-        - server
+      - server
     ports:
-        - "3000:3000"
-    environment:
-      - REACT_APP_PORT=3000
-      - CHOKIDAR_USEPOLLING=true
-    restart: always
-     
-      
-
+      - "3000:3000"
 volumes:
   mongo-storage:
     driver: local

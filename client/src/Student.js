@@ -30,10 +30,11 @@ class Student extends Component {
           return alert('you shoud fill all the fields !') 
          }
 
-        fetch('students/add',{
+        fetch('http://localhost:8000/students/add',{
           method:'POST',
           headers:{
-            'content-type':'application/json'
+            'content-type':'application/json',
+            'x-auth-token':token
           },
           body:JSON.stringify(student)
         }).then((response,error)=>{
@@ -46,7 +47,8 @@ class Student extends Component {
 
           })
         }).catch(()=>{
-          alert("verify the informations")
+          alert("verify infos")
+          console.log(token)
 
         })
     
